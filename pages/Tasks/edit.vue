@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h4>Create Task</h4>
+      <h4>Edit Task</h4>
   <form @submit.prevent="addTask">
    
    <div class="form-group">
@@ -18,9 +18,13 @@
     <input type="date" class="form-control" id="duedate" v-model="ddate">
    </div>
    <br>
+   <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="reminder">
+    <label class="form-check-label" for="exampleCheck1">Task Reminder</label>
+   </div>
     <br>
    <nuxt-link to="/tasks" class="btn btn-secondary">Back</nuxt-link>
-   <button type="submit" class="btn btn-success">Submit</button>
+   <button type="submit" class="btn btn-success">Update</button>
   
 </form>
 </div>
