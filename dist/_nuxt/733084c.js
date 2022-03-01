@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[7],{244:function(e,t,n){"use strict";n.r(t);var c=n(8),component=Object(c.a)({},(function(){var e=this.$createElement;return(this._self._c||e)("input",{attrs:{type:"file",accept:"image/*;capture=camera"}})}),[],!1,null,null,null);t.default=component.exports}}]);
