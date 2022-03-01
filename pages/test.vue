@@ -1,6 +1,7 @@
 <template>
   <div>
     <input type="file" accept="image/*;capture=camera" />
+    <h1>Updated</h1>
     <div>
       <v-quagga
         :onDetected="logIt"
