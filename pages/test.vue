@@ -20,22 +20,34 @@
 </template>
 
 <script>
-// const Client = require("@veryfi/veryfi-sdk");
 // import Client from "@veryfi/veryfi-sdk";
+// const Client = require("@veryfi/veryfi-sdk");
+import scanner from "../plugins/scanner";
 export default {
-  // async created() {
-  //   const client_id = "vrfdBR7u5cjwOvAXtsacPf0WJGiLXgZT0zTLg4M";
-  //   const client_secret =
-  //     "C3EYeAXPHzN1fb7klo1peBipo0ine8VwYug6I5s7i55g5Rsxrgn4GWos0UZljDeNBBJ7L8CohBWcYjmzRTsrWTBCeiJheOHEUoeElJ0vjYPG7G77Xc19XZfs2YErdyGB";
-  //   const username = "ezra1";
-  //   const api_key = "c7fa47314ac6af0207b602c311e90c68";
-
-  //   let my_client = new Client(client_id, client_secret, username, api_key);
-
-  //   const response = async () => await my_client.process_document("two.jpg");
-
-  //   response().then(console.log);
-  // },
+  async created() {
+    // const client_id = "vrfdBR7u5cjwOvAXtsacPf0WJGiLXgZT0zTLg4M";
+    // const client_secret =
+    //   "C3EYeAXPHzN1fb7klo1peBipo0ine8VwYug6I5s7i55g5Rsxrgn4GWos0UZljDeNBBJ7L8CohBWcYjmzRTsrWTBCeiJheOHEUoeElJ0vjYPG7G77Xc19XZfs2YErdyGB";
+    // const username = "ezra1";
+    // const api_key = "c7fa47314ac6af0207b602c311e90c68";
+    // let my_client = new Client(client_id, client_secret, username, api_key);
+    // const response = async () => await my_client.process_document("two.jpg");
+    // response().then(console.log);
+    // let my_client = new Client(
+    //   process.env.client_id,
+    //   process.env.client_secret,
+    //   process.env.username,
+    //   process.env.api_key
+    // );
+    // const response = async () =>
+    //   await my_client.process_document(
+    //     "https://makereceipt.com/images/CustomLogoReceipt4.jpg"
+    //   );
+    // response().then(console.log);
+    // scanner("https://makereceipt.com/images/CustomLogoReceipt4.jpg");
+    console.log("test");
+    this.testMethod();
+  },
   data() {
     return {
       readerSize: {
@@ -54,6 +66,12 @@ export default {
     imageFile(event) {
       console.log("event", event.target.files[0]);
       this.imageData = URL.createObjectURL(event.target.files[0]);
+    },
+    testMethod() {
+      console.log("testMethod");
+      scanner.receipt(
+        "https://wwwcache.wral.com/asset/5oys/smartshopper/2019/09/05/18613702/Food_Lion_9-5-19_receipt_6-DMID1-5k1wc7zp3-552x693.jpg"
+      );
     },
   },
 };
