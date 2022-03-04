@@ -6,13 +6,29 @@ admin.initializeApp()
 // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 // exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+    //   functions.logger.info("Hello logs!", {structuredData: true});
+    //   response.send("Hello from Firebase!");
+    // });
+    
+    const Client = require('@veryfi/veryfi-sdk');
+    exports.onAddTestMessage = functions.firestore.document('test/{docID}').onCreate(async (snap, context) => {
+        try {
+        
+    const client_id = 'vrfdBR7u5cjwOvAXtsacPf0WJGiLXgZT0zTLg4M';
+    const client_secret = 'C3EYeAXPHzN1fb7klo1peBipo0ine8VwYug6I5s7i55g5Rsxrgn4GWos0UZljDeNBBJ7L8CohBWcYjmzRTsrWTBCeiJheOHEUoeElJ0vjYPG7G77Xc19XZfs2YErdyGB';
+    const username = 'ezra1';
+    const api_key = 'c7fa47314ac6af0207b602c311e90c68';
+    
+    
+    let my_client = new Client(client_id, client_secret, username, api_key)
+    
+    
+    const response = await my_client.process_document_url("https://makereceipt.com/images/CustomLogoReceipt4.jpg")
+    // response().then(console.log)
+    console.log('response', response);
 
-exports.onAddTestMessage = functions.firestore.document('test/{docID}').onCreate(async (snap, context) => {
-    try {
-        return snap.ref.set({adminMessage: 'Welcome bot'}, {merge: true})
+ 
+        return snap.ref.set({adminMessage: response}, {merge: true})
     } catch (error) {
         console.log('stuff went', error);
         return Promise.reject(error)
