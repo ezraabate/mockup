@@ -22,13 +22,15 @@ admin.initializeApp()
     
     let my_client = new Client(client_id, client_secret, username, api_key)
     
-    
-    const response = await my_client.process_document_url("https://makereceipt.com/images/CustomLogoReceipt4.jpg")
-    // response().then(console.log)
-    console.log('response', response);
-
+    console.log(snap.data().url);
+    const response = await my_client.process_document_url(snap.data().url)
+    const items = response.line_items
+    console.log(response.line_items);
+    items.forEach(item => {
+        console.log(item.description);
+    });
  
-        return snap.ref.set({adminMessage: response}, {merge: true})
+        // return snap.ref.set(response, {merge: true})
     } catch (error) {
         console.log('stuff went', error);
         return Promise.reject(error)

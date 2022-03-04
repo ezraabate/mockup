@@ -1,14 +1,16 @@
 <template>
   <div>
-    <input
+    <!-- <input
       @change="imageFile($event)"
       type="file"
       accept="image/*;capture=camera"
-    />
+    /> -->
+    <input type="file" name="img" id="img" @change.prevent="primaryImg" />
+
     <h1>Updated</h1>
 
     <div>
-      <img :src="imageData" alt="" style="width: 100px; height: 100px" />
+      <img :src="tempSrc" alt="" style="width: 100px; height: 100px" />
       <!-- <v-quagga
         :onDetected="logIt"
         :readerSize="readerSize"
@@ -17,7 +19,7 @@
       <img />
     </div>
     <div>
-      <button class="action" @click="clicked">Click me</button>
+      <button class="action" @click="clicked">upload</button>
     </div>
   </div>
 </template>
@@ -26,31 +28,8 @@
 // import Client from "@veryfi/veryfi-sdk";
 // const Client = require("@veryfi/veryfi-sdk");
 import scanner from "../plugins/scanner";
+import firebase from 'firebase'
 export default {
-  async created() {
-    // const client_id = "vrfdBR7u5cjwOvAXtsacPf0WJGiLXgZT0zTLg4M";
-    // const client_secret =
-    //   "C3EYeAXPHzN1fb7klo1peBipo0ine8VwYug6I5s7i55g5Rsxrgn4GWos0UZljDeNBBJ7L8CohBWcYjmzRTsrWTBCeiJheOHEUoeElJ0vjYPG7G77Xc19XZfs2YErdyGB";
-    // const username = "ezra1";
-    // const api_key = "c7fa47314ac6af0207b602c311e90c68";
-    // let my_client = new Client(client_id, client_secret, username, api_key);
-    // const response = async () => await my_client.process_document("two.jpg");
-    // response().then(console.log);
-    // let my_client = new Client(
-    //   process.env.client_id,
-    //   process.env.client_secret,
-    //   process.env.username,
-    //   process.env.api_key
-    // );
-    // const response = async () =>
-    //   await my_client.process_document(
-    //     "https://makereceipt.com/images/CustomLogoReceipt4.jpg"
-    //   );
-    // response().then(console.log);
-    // scanner("https://makereceipt.com/images/CustomLogoReceipt4.jpg");
-    console.log("test");
-    this.testMethod();
-  },
   data() {
     return {
       readerSize: {
@@ -58,37 +37,51 @@ export default {
         height: 480,
       },
       detecteds: [],
-      imageData:
-        "https://static.scientificamerican.com/sciam/cache/file/4F73FD83-3377-42FC-915AD56BD66159FE_source.jpg",
+      imageData: {},
+      imageName: '',
+      tempSrc: ''
     };
   },
   methods: {
+    primaryImg(event) {
+      this.tempSrc = URL.createObjectURL(event.target.files[0])
+      this.imageData = event.target.files[0]
+      this.imageName = event.target.files[0].name
+    },
     logIt(data) {
       console.log("detected", data);
     },
     imageFile(event) {
-      console.log("event", event.target.files[0]);
       this.imageData = URL.createObjectURL(event.target.files[0]);
-      
+      console.log("event", event.target.files[0]);
     },
     testMethod() {
       console.log("testMethod");
-      if(process.server){
-
+      if (process.server) {
         scanner.receipt(
           "https://templates.invoicehome.com/receipt-template-us-neat-750px.png"
         );
       }
-      
     },
-    async clicked(){
-      await this.$fire.firestore.collection('test').add({test: 'test'})
-    }
+    async clicked() {
+      try {
+        
+        const storageRef = firebase.storage().ref().child(this.imageName);
+      let file = this.imageData;
+      console.log('file', this.imageName);
+      await storageRef.put(file);
+      this.imageRef = await storageRef.getDownloadURL();
+      console.log('image ref', this.imageRef);
+      await this.$fire.firestore.collection("test").add({ url: this.imageRef });
+      } catch (error) {
+        console.log('error', error);
+      }
+    },
   },
 };
 </script>
 <style scoped>
-.action{
+.action {
   padding: 4em;
   border: 1em;
   border-radius: 3px;
