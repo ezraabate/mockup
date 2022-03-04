@@ -69,9 +69,13 @@ export default {
     },
     testMethod() {
       console.log("testMethod");
-      scanner.receipt(
-        "https://wwwcache.wral.com/asset/5oys/smartshopper/2019/09/05/18613702/Food_Lion_9-5-19_receipt_6-DMID1-5k1wc7zp3-552x693.jpg"
-      );
+      if(process.server){
+
+        scanner.receipt(
+          "https://templates.invoicehome.com/receipt-template-us-neat-750px.png"
+        );
+      }
+      
     },
   },
 };

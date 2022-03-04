@@ -19,6 +19,7 @@
 // import Client from '@veryfi/veryfi-sdk';
 const scanner = {
     receipt (image) {
+    console.log('reached 1');
     const Client = require('@veryfi/veryfi-sdk');
     const client_id = 'vrfdBR7u5cjwOvAXtsacPf0WJGiLXgZT0zTLg4M';
     const client_secret = 'C3EYeAXPHzN1fb7klo1peBipo0ine8VwYug6I5s7i55g5Rsxrgn4GWos0UZljDeNBBJ7L8CohBWcYjmzRTsrWTBCeiJheOHEUoeElJ0vjYPG7G77Xc19XZfs2YErdyGB';
@@ -30,7 +31,7 @@ const scanner = {
     
     
     const response = async() => await my_client.process_document(image)
-    
+    console.log('reached')
     response().then(console.log)
 
     },
