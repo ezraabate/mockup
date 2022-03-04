@@ -16,6 +16,9 @@
       ></v-quagga> -->
       <img />
     </div>
+    <div>
+      <button class="action" @click="clicked">Click me</button>
+    </div>
   </div>
 </template>
 
@@ -66,6 +69,7 @@ export default {
     imageFile(event) {
       console.log("event", event.target.files[0]);
       this.imageData = URL.createObjectURL(event.target.files[0]);
+      
     },
     testMethod() {
       console.log("testMethod");
@@ -77,6 +81,17 @@ export default {
       }
       
     },
+    async clicked(){
+      await this.$fire.firestore.collection('test').add({test: 'test'})
+    }
   },
 };
 </script>
+<style scoped>
+.action{
+  padding: 4em;
+  border: 1em;
+  border-radius: 3px;
+  background: #349023;
+}
+</style>

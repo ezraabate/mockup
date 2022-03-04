@@ -1,3 +1,6 @@
+const isDev = process.env.NODE_ENV === 'development'
+const useEmulators = true // manually change if emulators needed
+
 export default {
   ssr: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -37,6 +40,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    // '@nuxtjs/firebase',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -53,7 +57,48 @@ export default {
            icons: ['fab']
          }
        ]
-      }]],
+      }
+    ],
+            // https://go.nuxtjs.dev/axios
+            [
+              '@nuxtjs/firebase',
+              {
+                config:  {
+                  apiKey: "AIzaSyAN_oMH13CltVJWfq35ytAm28KB8bYN1qo",
+                  authDomain: "trial-b72e2.firebaseapp.com",
+                  projectId: "trial-b72e2",
+                  storageBucket: "trial-b72e2.appspot.com",
+                  messagingSenderId: "572407319868",
+                  appId: "1:572407319868:web:9fdf6a1ea910af6dfa6239",
+                  measurementId: "G-0SGFSTE03C"
+                },
+                onFirebaseHosting: false,
+                terminateDatabasesAfterGenerate: true,     
+                services: {
+                  auth: {
+                    persistance: 'local',
+                    initialize: {
+                      // onAuthStateChangedAction: 'auth/onAuthStateChangedAction',
+                      subscribeManually: false,
+                    },
+                    ssr: false,
+                    emulatorPort: isDev && useEmulators ? 9099 : undefined,
+                    // disableEmulatorWarnings: false,
+                  },
+                  firestore: {
+                    memoryOnly: false,
+                    enablePersistence: true,
+                    emulatorPort: isDev && useEmulators ? 8080 : undefined,
+                  },
+                  functions: {
+                    emulatorPort: isDev && useEmulators ? 12345 : undefined,
+                  },
+                  storage: true,
+                },
+              },
+            ],
+      
+    ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
