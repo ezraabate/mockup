@@ -28,8 +28,18 @@
 // import Client from "@veryfi/veryfi-sdk";
 // const Client = require("@veryfi/veryfi-sdk");
 import scanner from "../plugins/scanner";
-import firebase from 'firebase'
+import firebase from "firebase";
+import axios from "axios";
 export default {
+  created() {
+    axios
+      .get(
+        "https://world.openfoodfacts.org/api/v2/search?categories_tags_en=cheddar&,fair%20trade&fields=code,product_name,brands,attribute_groups"
+      )
+      .then((response) => {
+        console.log("response", response);
+      });
+  },
   data() {
     return {
       readerSize: {
@@ -38,15 +48,15 @@ export default {
       },
       detecteds: [],
       imageData: {},
-      imageName: '',
-      tempSrc: ''
+      imageName: "",
+      tempSrc: "",
     };
   },
   methods: {
     primaryImg(event) {
-      this.tempSrc = URL.createObjectURL(event.target.files[0])
-      this.imageData = event.target.files[0]
-      this.imageName = event.target.files[0].name
+      this.tempSrc = URL.createObjectURL(event.target.files[0]);
+      this.imageData = event.target.files[0];
+      this.imageName = event.target.files[0].name;
     },
     logIt(data) {
       console.log("detected", data);
@@ -65,16 +75,17 @@ export default {
     },
     async clicked() {
       try {
-        
         const storageRef = firebase.storage().ref().child(this.imageName);
-      let file = this.imageData;
-      console.log('file', this.imageName);
-      await storageRef.put(file);
-      this.imageRef = await storageRef.getDownloadURL();
-      console.log('image ref', this.imageRef);
-      await this.$fire.firestore.collection("test").add({ url: this.imageRef });
+        let file = this.imageData;
+        console.log("file", this.imageName);
+        await storageRef.put(file);
+        this.imageRef = await storageRef.getDownloadURL();
+        console.log("image ref", this.imageRef);
+        await this.$fire.firestore
+          .collection("test")
+          .add({ url: this.imageRef });
       } catch (error) {
-        console.log('error', error);
+        console.log("error", error);
       }
     },
   },
